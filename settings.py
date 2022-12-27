@@ -18,7 +18,7 @@ SESSION_CONFIGS = [
         num_demo_participants=3,
     ),
     dict(
-        name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=1
+        name='Umfrage', app_sequence=['umfrage_gruppe3', 'payment_info'], num_demo_participants=1
     ),
 ]
 
