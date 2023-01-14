@@ -2,7 +2,7 @@ from otree.api import *
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'umfrage_gruppe3
+    NAME_IN_URL = 'Survey'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 

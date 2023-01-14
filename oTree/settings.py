@@ -1,13 +1,12 @@
 """
 running server:
-cd <path to settings.py
-otree start devserver
+cd <path to settings.py>
+otree devserver
 """
 
 
 
 from os import environ
-
 
 
 SESSION_CONFIGS = [
@@ -36,19 +35,19 @@ SESSION_FIELDS = []
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'de'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = 'USD'
+REAL_WORLD_CURRENCY_CODE = 'EUR'
 USE_POINTS = True
 
 ROOMS = [
     dict(
         name='econ101',
         display_name='Econ 101 class',
-        participant_label_file='oTree/_rooms/econ101.txt',
+        participant_label_file='_rooms/econ101.txt',
     ),
-    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
+    dict(name='umfrage_gruppe3', display_name='Umfrage'),
 ]
 
 ADMIN_USERNAME = 'admin'
