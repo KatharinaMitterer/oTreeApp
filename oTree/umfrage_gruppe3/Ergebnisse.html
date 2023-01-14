@@ -1,0 +1,17 @@
+{{ block title }}Ihre Ergebnisse{{ endblock }}
+{{ block content }}
+
+    <p>
+
+            Sie haben auf Frage 1 gewählt: {{ f1_decision }}. <p>
+            Sie haben auf Frage 2 gewählt: {{ f2_decision }}. <p>
+            Sie haben auf Frage 3 gewählt: {{ f3_decision }}. <p>
+
+    </p>
+
+    <img src="{{ static 'Bild_Ergebnisse.pdf' }}"/>
+
+    {{ next_button }}
+
+
+{{ endblock }}

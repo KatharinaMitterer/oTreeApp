@@ -1,4 +1,5 @@
 from otree.api import *
+import matplotlib.pyplot as plt
 
 
 class C(BaseConstants):
@@ -37,11 +38,11 @@ class Player(BasePlayer):
         choices=['A) Sehr unwahrscheinlich', 'B) Eher unwahrscheinlich', 'C) Eher wahrscheinlich', 'D) Sehr wahrscheinlich'],
         widget=widgets.RadioSelect,
     )
-    frage3 = models.IntegerField(
+    frage3 = models.StringField(
         label='''
         Auf einer Skala von 1-6, wie oft schauen Sie sich Fußballspiele 
         an, einschließlich der Weltmeisterschaft?''',
-        choices=[['1', '1'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5'], ['6', '6']],
+        choices=[['31', '1'], ['32', '2'], ['33', '3'], ['34', '4'], ['35', '5'], ['36', '6']],
         widget=widgets.RadioSelectHorizontal,
     )
 
@@ -66,4 +67,17 @@ class Frage3(Page):
     form_fields = ['frage3']
 
 
-page_sequence = [Demographics, Frage1, Frage2, Frage3]
+class Ergebnisse(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        plt.scatter(3, 3)
+        plt.xlabel('Fragen')
+        plt.ylabel('Antworten')
+        plt.savefig('./_static/Bild_Ergebnisse.pdf', format='pdf')
+        return dict(
+            f1_decision=player.field_display('frage1'), f2_decision=player.field_display('frage2'),
+            f3_decision=player.field_display('frage3'))
+
+
+
+page_sequence = [Frage1, Frage2, Frage3, Ergebnisse]

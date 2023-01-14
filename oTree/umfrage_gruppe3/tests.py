@@ -14,3 +14,5 @@ class PlayerBot(Bot):
 
         for value in [self.player.crt_bat, self.player.payoff]:
             expect(value, '!=', None)
+
+
