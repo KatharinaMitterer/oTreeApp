@@ -16,32 +16,35 @@ class Group(BaseGroup):
     pass
 
 
-def get_number_current_players(group: Group):
-    def count_voters(self):
-        return sum([p.has_voted for p in self.get_players()])
+def anzahl_spieler(subsession):
+    #Anzahl der Spieler, die bisher and der Umfrage teilgenommen haben, d.h. schaetzfrage 2 beantwortet hatten
+    anzahl = 0
+    for player in subsession.get_players():
+        if player.schaetzfrage2 != 0:
+            anzahl += 1
+    return anzahl
 
 
-
-def plot_data_Ergebnisse1(group):
+def plot_data_Ergebnisse1(subsession, player):
 
     plt.figure(figsize=(16, 8))
-    players = group.get_players()
-    schaetzfrage1_antworten=[]
+
     # Zähle die Anzahl der Antworten für jede Antwortmöglichkeit
+    schaetzfrage1_antworten=[]
     schaetzfrage1_antworten_besorgter_teilnehmer = []
     schaetzfrage1_antworten_unbesorgter_teilnehmer = []
 
     # Holt Antworten der Vorab-Frage 1 und Schaetzfrage1
-    for p in players:
-        if p.schaetzfrage1 != None:
-            schaetzfrage1_antworten.append(p.schaetzfrage1)
 
-    for p in group.get_players():
-        #besorgeter Teilnehmer
-        if p.frage1 in [1,2]:
-            schaetzfrage1_antworten_besorgter_teilnehmer.append(p.schaetzfrage1)
-        if p.frage1 in[3,4]:
-            schaetzfrage1_antworten_unbesorgter_teilnehmer.append(p.schaetzfrage1)
+    for p in subsession.get_players():
+        if p.schaetzfrage1 != 0:
+            #Sammeln der Antworten aller Teilnehmer für Histogram:
+            schaetzfrage1_antworten.append(p.schaetzfrage1)
+            #Aufteilung Teilnehmer in besorgt und unbesorgt
+            if p.frage1 == '1' or p.frage1 == '2':
+                schaetzfrage1_antworten_besorgter_teilnehmer.append(p.schaetzfrage1)
+            if p.frage1 == '3' or p.frage1 == '4':
+                schaetzfrage1_antworten_unbesorgter_teilnehmer.append(p.schaetzfrage1)
 
     durchschnitt_besorgter_teilnehmer = np.mean(schaetzfrage1_antworten_besorgter_teilnehmer)
     durchschnitt_unbesorgter_teilnehmer = np.mean(schaetzfrage1_antworten_unbesorgter_teilnehmer)
@@ -49,18 +52,21 @@ def plot_data_Ergebnisse1(group):
     # Histogramm erstellen
     n, bins, patches = plt.hist(schaetzfrage1_antworten, bins=range(0, 101, 5), color='blue', align='mid')
 
-    # Balken im Intervall von 56 bis 60 grün färben
-    patches[11].set_fc('green')
-
+    #eigene Antwort des Spielers hellblau färben
     value_bin = next(idx for idx, val in enumerate(bins) if val > player.schaetzfrage1)
     patches[value_bin - 1].set_fc('lightblue')
+
+    # richtige Antwort als grüner Strich
+    plt.axvline(60, color='green', linewidth=2)
+    plt.annotate('Richtige Antwort', xy=(60, n.max()+5), xytext=(60, n.max()+5),
+                arrowprops=dict(facecolor='green', shrink=0.05), color='green', fontsize=12)
 
     #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt der nicht besorgten Teilnehmer
     for i in range(len(bins) - 1):
         if (durchschnitt_unbesorgter_teilnehmer >= bins[i]) and (durchschnitt_unbesorgter_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
-            plt.annotate(s='Mittelwert der Teilnehmer*innen die über Klimawandel nicht besorgt sind', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
+            plt.annotate(text='Mittelwert der Teilnehmer*innen die über Klimawandel nicht besorgt sind', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1), color='red',
                          arrowprops=dict(facecolor='red', shrink=0.05))
             break
 
@@ -69,7 +75,7 @@ def plot_data_Ergebnisse1(group):
         if (durchschnitt_besorgter_teilnehmer >= bins[i]) and (durchschnitt_besorgter_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
             plt.annotate(s='Mittelwert der Teilnehmer*innen die über Klimawandel besorgt sind ', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1), color='orange',
                          arrowprops=dict(facecolor='orange', shrink=0.05))
             break
 
@@ -82,31 +88,36 @@ def plot_data_Ergebnisse1(group):
     plt.xticks(range(0, 101, 5), size=12)
     plt.yticks(size=12)
 
-
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätze Prozentzahl [%]', size=16)
     plt.ylabel('Anzahl der Schätzungen', size=16)
 
     # Bild speichern
     plt.savefig('./_static/Bild_Ergebnisse1.pdf', format='pdf', bbox_inches='tight')
+    return schaetzfrage1_antworten, schaetzfrage1_antworten_besorgter_teilnehmer, schaetzfrage1_antworten_unbesorgter_teilnehmer, player.frage1
 
-def plot_data_Ergebnisse2(group):
+def plot_data_Ergebnisse2(subsession, player):
 
     plt.figure(figsize=(16, 8))
 
-    # Holt Antworten der Schaetzfrage2
-    schaetzfrage2_antworten = [p.schaetzfrage2 for p in group.get_players()]
+    # Zähle die Anzahl der Antworten für jede Antwortmöglichkeit
+    schaetzfrage2_antworten = []
+    schaetzfrage2_antworten_positive_einstellung = []
+    schaetzfrage2_antworten_negative_einstellung = []
+
+    # Holt Antworten der Vorab-Frage 1 und Schaetzfrage1
+
+    for p in subsession.get_players():
+        if p.schaetzfrage2 != 0:
+            # Sammeln der Antworten aller Teilnehmer für Histogram:
+            schaetzfrage2_antworten.append(p.schaetzfrage2)
+            # Aufteilung Teilnehmer in besorgt und unbesorgt
+            if p.frage1 in [1, 2]:
+                schaetzfrage2_antworten_negative_einstellung.append(p.schaetzfrage2)
+            if p.frage1 in [3, 4]:
+                schaetzfrage2_antworten_positive_einstellung.append(p.schaetzfrage2)
 
     # Aufteilung in Teilnehmer die dem Weiterbetrieb von AKWs positiv gegenüber stehen und jene die eine negativ
-
-    schaetzfrage2_antworten_positive_einstellung=[]
-    schaetzfrage2_antworten_negative_einstellung=[]
-
-    for p in group.get_players():
-        if p.frage2 in [1,2]:
-            schaetzfrage2_antworten_negative_einstellung.append(p.schaetzfrage2)
-        if p.frage2 in[3,4]:
-            schaetzfrage2_antworten_positive_einstellung.append(p.schaetzfrage2)
 
     durchschnitt_positive_teilnehmer = np.mean(schaetzfrage2_antworten_positive_einstellung)
     durchschnitt_negative_teilnehmer = np.mean(schaetzfrage2_antworten_negative_einstellung)
@@ -115,28 +126,31 @@ def plot_data_Ergebnisse2(group):
     n, bins, patches = plt.hist(schaetzfrage2_antworten, bins=range(0, 100, 2), color='blue')
     plt.xlim(2, 42)
 
-    # Balken im Intervall von 7 bis 9 bis 60 grün färben
-    patches[2].set_fc('green')
-
+    # antwort des Spieler hellblau färben
     value_bin = next(idx for idx, val in enumerate(bins) if val > player.schaetzfrage2)
     patches[value_bin - 1].set_fc('lightblue')
 
-    #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt der nicht besorgten Teilnehmer
-    for i in range(len(bins) - 1):
-        if (durchschnitt_positive_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
-            plt.annotate(s='Mittelwert der Teilnehmer*innen die über Klimawandel nicht besorgt sind', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
-                         arrowprops=dict(facecolor='red', shrink=0.05))
-            break
+    # Balken im Intervall von 7 bis 9 bis 60 grün färben
+    patches[2].set_fc('green')
 
-    # Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt der besorgten Teilnehmer
+
+
+    #Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt Teilnehmer die Weiterbetrieb positiv sehen
     for i in range(len(bins) - 1):
         if (durchschnitt_positive_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
-            plt.annotate(s='Mittelwert der Teilnehmer*innen die über Klimawandel besorgt sind ', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+            plt.annotate(s='Mittelwert der Teilnehmer*innen die den Weiterbetreib von AKWs positiv sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
                          xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
                          arrowprops=dict(facecolor='orange', shrink=0.05))
+            break
+
+    #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt Teilnehmer die Weiterbetrieb negativ sehen
+    for i in range(len(bins) - 1):
+        if (durchschnitt_negative_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
+            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
+            plt.annotate(s='Mittelwert der Teilnehmer*innen die den Weiterbetreib von AKWs negativ sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
+                         arrowprops=dict(facecolor='red', shrink=0.05))
             break
 
     # Achsenbeschriftung hinzufügen
@@ -157,7 +171,7 @@ def plot_data_Ergebnisse2(group):
 
 class Player(BasePlayer):
 
-    frage1 = models.StringField(
+    frage1 = models.StringField(initial=0,
         label='''
         1.) Auf einer Skala von 1-4 wie besorgt sind Sie über die Auswirkungen der Klimawandels auf unsere Umwelt und
          Gesellschaft?<br><br>
@@ -165,34 +179,22 @@ class Player(BasePlayer):
         choices=[[1, '1 = Gar nicht besorgt'], [2, '2 = Eher nicht besorgt'], [3, '3 = Eher besorgt'], [4, '4 = Sehr besorgt']],
         widget=widgets.RadioSelectHorizontal,
     )
-    frage2 = models.StringField(
+    frage2 = models.StringField(initial=0,
         label='''
         <br><br><br>
         2.) Auf einer Skala von 1-4, wie positiv stehen Sie einem Weiterbetrieb von Atomkraftwerken gegenüber?<br><br>''',
         choices=[['1', '1 = Sehr negativ'], ['2', '2 = Eher negativ'], ['3', '3 = Eher positiv'], ['4', '4 = Sehr positiv']],
         widget=widgets.RadioSelectHorizontal,
     )
-    frage3 = models.StringField(
-        label='''
-        <br><br><br>
-        3.) Auf einer Skala von 1-4, wie positiv empfanden Sie die Austragung der Fußball-WM 2022 in Katar?<br><br>''',
-        choices=[['1', '1 = Sehr negativ'], ['2', '2 = Eher negativ'], ['3', '3 = Eher positiv'], ['4', '4 = Sehr positiv']],
-        widget=widgets.RadioSelectHorizontal,
-    )
-    schaetzfrage1 = models.IntegerField(
+    schaetzfrage1 = models.IntegerField(initial=0,
             label="Um wie viel Prozent schätzen Sie, haben die CO2-Emissionen weltweit \
             seit 1990 zugenommen (Stand Ende 2021)?",
-            min=0, max=100
+            min=0
     )
-    schaetzfrage2 = models.IntegerField(label = "Wie hoch schätzen die den Beitrag von Atomkraftwerken (AKWs)\
+    schaetzfrage2 = models.IntegerField(initial=0,
+         label="Wie hoch schätzen die den Beitrag von Atomkraftwerken (AKWs)\
          zu unserem Strommix in Deutschland (in Prozent)?", min=0, max=100
     )
-    schaetzfrage3 = models.IntegerField(label="Wie viele Arbeiter schätzen Sie sind im Rahmen der\
-         WM-Vorbereitungen in Katar ums Leben gekommen?",
-    )
-
-
-
 
 # FUNCTIONS
 # PAGES
@@ -201,7 +203,7 @@ class Anweisung(Page):
 
 class Vorab_Fragen(Page):
     form_model = 'player'
-    form_fields = ['frage1', 'frage2', 'frage3']
+    form_fields = ['frage1', 'frage2']
 
 class Schaetzfrage1(Page):
     form_model = 'player'
@@ -211,29 +213,25 @@ class Schaetzfrage2(Page):
     form_model = 'player'
     form_fields = ['schaetzfrage2']
 
-class Schaetzfrage3(Page):
-    form_model = 'player'
-    form_fields = ['schaetzfrage3']
-
 
 class Ergebnisse1(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        #plot_data_Ergebnisse1(player.group)
+        plot_data_Ergebnisse1(player.subsession, player)
         return dict(
             schaetzfrage1_antwort=player.schaetzfrage1,
             differenz_prozentpunkte_schaetzfrage1=abs(60 - player.schaetzfrage1),
-            anzahl_bisheriger_teilnehmer=len(player.in_all_rounds())
-        )
+            anzahl_bisheriger_teilnehmer=anzahl_spieler(player.subsession),
+            hallo=plot_data_Ergebnisse1(player.subsession, player))
+
 
 class Ergebnisse2(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        #plot_data_Ergebnisse2(player.group)
+        plot_data_Ergebnisse2(player.subsession, player)
         return dict(schaetzfrage2_antwort=player.schaetzfrage2,
                 differenz_prozentpunkte_schaetzfrage2=abs(7 - player.schaetzfrage2),
-                anzahl_bisheriger_teilnehmer=get_number_current_players.count_voters(player.group),
-                hallo=player)
+                anzahl_bisheriger_teilnehmer=anzahl_spieler(player.subsession))
 
 
 class Ende(Page):
