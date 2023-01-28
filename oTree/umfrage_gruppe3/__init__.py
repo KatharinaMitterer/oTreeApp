@@ -69,7 +69,7 @@ def plot_data_Ergebnisse1(subsession, player):
                         label='Mittelwert der Teilnehmer*innen die\nüber Klimawandel nicht besorgt sind')
             break
 
-    plt.legend(bbox_to_anchor=(0.5, n.max()*1.15), ncol=3, loc='lower center', fontsize=15)
+    plt.legend(bbox_to_anchor=(0.5, -0.25), ncol=3, loc='lower center', fontsize=15)
 
 
     # nur ganzzahlige Zahlen für y-Achse anzeigen
@@ -82,14 +82,14 @@ def plot_data_Ergebnisse1(subsession, player):
     for i in range(len(bins) - 1):
         middlepoints.append((bins[i] + bins[i + 1]) / 2)
 
-    x_ticks = [f'{bins[i]}-{bins[i + 1]}' for i in range(len(bins) - 1)]
+    x_ticks = [f'{int(bins[i])}-{int(bins[i + 1])}' for i in range(len(bins) - 1)]
     plt.xticks(middlepoints, x_ticks, size=12)
 
     plt.yticks(size=12)
 
 
     # Achsenbeschriftung hinzufügen
-    plt.xlabel('Geschätze Prozentzahl [%]', size=16)
+    plt.xlabel('Geschätzte Prozentzahl [%]', size=16)
     plt.ylabel('Anzahl der Schätzungen', size=16)
 
     # Bild speichern
@@ -126,7 +126,7 @@ def plot_data_Ergebnisse2(subsession, player):
     for i in range(len(bins) - 1):
         middlepoints.append((bins[i] + bins[i + 1]) / 2)
 
-    x_ticks = [f'{bins[i]}-{bins[i + 1]}' for i in range(len(bins) - 1)]
+    x_ticks = [f'{int(bins[i])}-{int(bins[i + 1])}' for i in range(len(bins) - 1)]
     plt.xticks(middlepoints, x_ticks, size=12)
 
     #eigene Antwort des Spielers hellblau färben
@@ -150,7 +150,7 @@ def plot_data_Ergebnisse2(subsession, player):
                         label='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs positiv sehen')
             break
 
-    plt.legend(bbox_to_anchor=(0.5, n.max() * 1.15), ncol=3, loc='lower center', fontsize=15)
+    plt.legend(bbox_to_anchor=(0.5, -0.25), ncol=3, loc='lower center', fontsize=15)
 
     # nur ganzzahlige Zahlen für y-Achse anzeigen
     ax = plt.gca()
@@ -161,7 +161,7 @@ def plot_data_Ergebnisse2(subsession, player):
     #plt.yticks(size=12)
 
     # Achsenbeschriftung hinzufügen
-    plt.xlabel('Geschätze Prozentzahl [%]', size=16)
+    plt.xlabel('Geschätzte Prozentzahl [%]', size=16)
     plt.ylabel('Anzahl der Schätzungen', size=16)
 
     # Bild speichern
