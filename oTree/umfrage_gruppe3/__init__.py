@@ -57,30 +57,19 @@ def plot_data_Ergebnisse1(subsession, player):
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
-    plt.axvline(60, color='green', linewidth=2, label='Richtige ANtwort')
-
-    plt.annotate(text='Richtige Antwort',
-                 xy=(60, n.max()),
-                 xytext=(60 - 9, n.max()*1.1), color='green',
-                 arrowprops=dict(facecolor='green', shrink=0.05), size=15, zorder=10)
-
-    #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt der nicht besorgten Teilnehmer
-    for i in range(len(bins) - 1):
-        if (durchschnitt_unbesorgter_teilnehmer >= bins[i]) and (durchschnitt_unbesorgter_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
-            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nüber Klimawandel nicht besorgt sind', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='red',
-                         arrowprops=dict(facecolor='red', shrink=0.05), size=15, zorder=5)
-            break
-
-    # Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt der besorgten Teilnehmer
+    plt.axvline(60, color='green', linewidth=2, label='Richtige Antwort')
     for i in range(len(bins) - 1):
         if (durchschnitt_besorgter_teilnehmer >= bins[i]) and (durchschnitt_besorgter_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
-            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nüber Klimawandel besorgt sind ', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='orange',
-                         arrowprops=dict(facecolor='orange', shrink=0.05), size=15, zorder=5)
+            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2,
+                        label='Mittelwert der Teilnehmer*innen die\nüber Klimawandel besorgt sind')
             break
+    for i in range(len(bins) - 1):
+        if (durchschnitt_unbesorgter_teilnehmer >= bins[i]) and (durchschnitt_unbesorgter_teilnehmer < bins[i + 1]):
+            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2,
+                        label='Mittelwert der Teilnehmer*innen die\nüber Klimawandel nicht besorgt sind')
+            break
+
+    plt.legend(bbox_to_anchor=(0.5, n.max()*1.15), ncol=3, loc='lower center', fontsize=15)
 
 
     # nur ganzzahlige Zahlen für y-Achse anzeigen
@@ -88,8 +77,16 @@ def plot_data_Ergebnisse1(subsession, player):
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
     #Erzeugung der Achsenbeschriftungen für x als Intervalle
-    plt.xticks(range(0, 101, 5), size=12)
+    middlepoints = []
+
+    for i in range(len(bins) - 1):
+        middlepoints.append((bins[i] + bins[i + 1]) / 2)
+
+    x_ticks = [f'{bins[i]}-{bins[i + 1]}' for i in range(len(bins) - 1)]
+    plt.xticks(middlepoints, x_ticks, size=12)
+
     plt.yticks(size=12)
+
 
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätze Prozentzahl [%]', size=16)
@@ -123,45 +120,45 @@ def plot_data_Ergebnisse2(subsession, player):
     durchschnitt_negative_teilnehmer = np.mean(schaetzfrage2_antworten_negative_einstellung)
     durchschnitt_positive_teilnehmer = np.mean(schaetzfrage2_antworten_positive_einstellung)
 
-    # Histogramm erstellen
-    n, bins, patches = plt.hist(schaetzfrage2_antworten, bins=range(0, 101, 5), color='blue', align='mid')
+    n, bins, patches = plt.hist(schaetzfrage2_antworten, bins=range(0, 50, 2), color='blue', align='mid')
+    middlepoints = []
+
+    for i in range(len(bins) - 1):
+        middlepoints.append((bins[i] + bins[i + 1]) / 2)
+
+    x_ticks = [f'{bins[i]}-{bins[i + 1]}' for i in range(len(bins) - 1)]
+    plt.xticks(middlepoints, x_ticks, size=12)
 
     #eigene Antwort des Spielers hellblau färben
     value_bin = next(idx for idx, val in enumerate(bins) if val > player.schaetzfrage2)
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
-    plt.axvline(60, color='green', linewidth=2)
-    plt.annotate(text='Richtige Antwort',
-                 xy=(7, n.max()),
-                 xytext=(7 - 1, n.max()*1.1), color='green',
-                 arrowprops=dict(facecolor='green', shrink=0.05), size=15, zorder=10)
+    plt.axvline(7, color='green', linewidth=2, label='Richtige Antwort')
 
     #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt der nicht besorgten Teilnehmer
     for i in range(len(bins) - 1):
         if (durchschnitt_negative_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
-            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs negativ sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='red',
-                         arrowprops=dict(facecolor='red', shrink=0.05), size=15, zorder=5)
+            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2,
+                        label='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs negativ sehen')
             break
 
     # Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt der besorgten Teilnehmer
     for i in range(len(bins) - 1):
         if (durchschnitt_positive_teilnehmer >= bins[i]) and (durchschnitt_positive_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
-            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs positiv sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='orange',
-                         arrowprops=dict(facecolor='orange', shrink=0.05), size=15, zorder=5)
+            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2,
+                        label='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs positiv sehen')
             break
+
+    plt.legend(bbox_to_anchor=(0.5, n.max() * 1.15), ncol=3, loc='lower center', fontsize=15)
 
     # nur ganzzahlige Zahlen für y-Achse anzeigen
     ax = plt.gca()
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
     #Erzeugung der Achsenbeschriftungen für x als Intervalle
-    plt.xticks(range(0, 101, 5), size=12)
-    plt.yticks(size=12)
+    #plt.xticks(bins, bins_names)
+    #plt.yticks(size=12)
 
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätze Prozentzahl [%]', size=16)
