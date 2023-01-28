@@ -11,15 +11,12 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='guess_two_thirds',
-        display_name="Guess 2/3 of the Average",
-        app_sequence=['guess_two_thirds', 'payment_info'],
-        num_demo_participants=3,
+        name='Umfrage', app_sequence=['umfrage_gruppe3'], num_demo_participants=4
     ),
-    dict(
-        name='Umfrage', app_sequence=['umfrage_gruppe3', 'payment_info'], num_demo_participants=1
-    ),
-]
+    dict(name='common_value_action',
+        display_name="common_value_action",
+        app_sequence=['common_value_auction'],
+        num_demo_participants=3)]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
 # in SESSION_CONFIGS, except those that explicitly override it.
@@ -42,11 +39,6 @@ REAL_WORLD_CURRENCY_CODE = 'EUR'
 USE_POINTS = True
 
 ROOMS = [
-    dict(
-        name='econ101',
-        display_name='Econ 101 class',
-        participant_label_file='_rooms/econ101.txt',
-    ),
     dict(name='umfrage_gruppe3', display_name='Umfrage'),
 ]
 
@@ -55,7 +47,7 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """
-Here are some oTree games.
+Wilkommen zum Demo der Umfrage von Gruppe 3! 
 """
 
 

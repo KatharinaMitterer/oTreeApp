@@ -1,0 +1,38 @@
+{{ block title }}Ihr Ergebnis im Vergleich (2/2){{ endblock }}
+{{ block content }}
+
+    <p>
+        Tatsächlich trugen AKWs im Jahr 2022 7 % zum Strommix in Deutschland bei.
+        Mit Ihrer Antwort von <b>{{schaetzfrage2_antwort}} %</b> lagen Sie um <b><span style="white-space: nowrap;">
+        {{ differenz_prozentpunkte_schaetzfrage2 }} </span>Prozentpunkte </b> daneben.
+    </p>
+
+    <p>
+        <div style="display: flex;">
+            <img  src="{{ static 'Glühbirne.pdf'}}"
+                width="200" height="150"/>
+
+            <div style="background-color: #f5f5f5; /* lighter grey */  color: black; padding: 20px; border-radius: 25px; border: 2px solid #D9D9D9;">
+                Der sogenannte <b>Confirmation Bias</b> könnte bei den Schätzungen einiger Teilnehmer*innen eine Rolle gespielt
+                haben. Studien zeigen, dass Menschen oft dazu neigen, Informationen so auszuwählen und zu interpretieren,
+                dass diese die eigenen Erwartungen bestätigen. Teilnehmer*innen, die sich allgemein über den Klimawandel besorgt
+                zeigen, könnten daher den Anstieg der weltweiten CO2-Emissionen höher einschätzen, als Teilnehmer*innen,
+                die nicht besorgt sind.
+            </div>
+        </div>
+
+    </p>
+    <br>
+    <p>
+        Im Diagramm können Sie die Schätzungen der anderen Teilnehmer*innen sehen und so selbst einschätzen, ob der Confirmation Bias Auswirkungen hatte.
+        Bisher haben <b>{{anzahl_bisheriger_teilnehmer}} Teilnehmer</b> am Experiment teilgenommen.
+
+    </p>
+    {{hallo}}
+
+    <img src="{{ static 'Bild_Ergebnisse1.pdf' }}"/>
+
+    {{ next_button }}
+
+
+{{ endblock }}
