@@ -57,26 +57,29 @@ def plot_data_Ergebnisse1(subsession, player):
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
-    plt.axvline(60, color='green', linewidth=2)
-    plt.annotate('Richtige Antwort', xy=(60, n.max()+5), xytext=(60, n.max()+5),
-                arrowprops=dict(facecolor='green', shrink=0.05), color='green', fontsize=12)
+    plt.axvline(60, color='green', linewidth=2, label='Richtige ANtwort')
+
+    plt.annotate(text='Richtige Antwort',
+                 xy=(60, n.max()),
+                 xytext=(60 - 9, n.max()*1.1), color='green',
+                 arrowprops=dict(facecolor='green', shrink=0.05), size=15, zorder=10)
 
     #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt der nicht besorgten Teilnehmer
     for i in range(len(bins) - 1):
         if (durchschnitt_unbesorgter_teilnehmer >= bins[i]) and (durchschnitt_unbesorgter_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
-            plt.annotate(text='Mittelwert der Teilnehmer*innen die über Klimawandel nicht besorgt sind', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1), color='red',
-                         arrowprops=dict(facecolor='red', shrink=0.05))
+            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nüber Klimawandel nicht besorgt sind', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='red',
+                         arrowprops=dict(facecolor='red', shrink=0.05), size=15, zorder=5)
             break
 
     # Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt der besorgten Teilnehmer
     for i in range(len(bins) - 1):
         if (durchschnitt_besorgter_teilnehmer >= bins[i]) and (durchschnitt_besorgter_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
-            plt.annotate(s='Mittelwert der Teilnehmer*innen die über Klimawandel besorgt sind ', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1), color='orange',
-                         arrowprops=dict(facecolor='orange', shrink=0.05))
+            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nüber Klimawandel besorgt sind ', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='orange',
+                         arrowprops=dict(facecolor='orange', shrink=0.05), size=15, zorder=5)
             break
 
 
@@ -105,68 +108,68 @@ def plot_data_Ergebnisse2(subsession, player):
     schaetzfrage2_antworten_positive_einstellung = []
     schaetzfrage2_antworten_negative_einstellung = []
 
-    # Holt Antworten der Vorab-Frage 1 und Schaetzfrage1
+    # Holt Antworten der Vorab-Frage 2 und Schaetzfrage2
 
     for p in subsession.get_players():
         if p.schaetzfrage2 != 0:
             # Sammeln der Antworten aller Teilnehmer für Histogram:
             schaetzfrage2_antworten.append(p.schaetzfrage2)
             # Aufteilung Teilnehmer in besorgt und unbesorgt
-            if p.frage1 in [1, 2]:
+            if p.frage2 == '1' or p.frage2 == '2':
                 schaetzfrage2_antworten_negative_einstellung.append(p.schaetzfrage2)
-            if p.frage1 in [3, 4]:
+            if p.frage2 == '3' or p.frage2 == '4' :
                 schaetzfrage2_antworten_positive_einstellung.append(p.schaetzfrage2)
 
-    # Aufteilung in Teilnehmer die dem Weiterbetrieb von AKWs positiv gegenüber stehen und jene die eine negativ
-
-    durchschnitt_positive_teilnehmer = np.mean(schaetzfrage2_antworten_positive_einstellung)
     durchschnitt_negative_teilnehmer = np.mean(schaetzfrage2_antworten_negative_einstellung)
+    durchschnitt_positive_teilnehmer = np.mean(schaetzfrage2_antworten_positive_einstellung)
 
     # Histogramm erstellen
-    n, bins, patches = plt.hist(schaetzfrage2_antworten, bins=range(0, 100, 2), color='blue')
-    plt.xlim(2, 42)
+    n, bins, patches = plt.hist(schaetzfrage2_antworten, bins=range(0, 101, 5), color='blue', align='mid')
 
-    # antwort des Spieler hellblau färben
+    #eigene Antwort des Spielers hellblau färben
     value_bin = next(idx for idx, val in enumerate(bins) if val > player.schaetzfrage2)
     patches[value_bin - 1].set_fc('lightblue')
 
-    # Balken im Intervall von 7 bis 9 bis 60 grün färben
-    patches[2].set_fc('green')
+    # richtige Antwort als grüner Strich
+    plt.axvline(60, color='green', linewidth=2)
+    plt.annotate(text='Richtige Antwort',
+                 xy=(7, n.max()),
+                 xytext=(7 - 1, n.max()*1.1), color='green',
+                 arrowprops=dict(facecolor='green', shrink=0.05), size=15, zorder=10)
 
-
-
-    #Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt Teilnehmer die Weiterbetrieb positiv sehen
-    for i in range(len(bins) - 1):
-        if (durchschnitt_positive_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
-            plt.annotate(s='Mittelwert der Teilnehmer*innen die den Weiterbetreib von AKWs positiv sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
-                         arrowprops=dict(facecolor='orange', shrink=0.05))
-            break
-
-    #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt Teilnehmer die Weiterbetrieb negativ sehen
+    #Zeichnet roten Strich durch die Mitte des Balkens mit dem Durschnitt der nicht besorgten Teilnehmer
     for i in range(len(bins) - 1):
         if (durchschnitt_negative_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2)
-            plt.annotate(s='Mittelwert der Teilnehmer*innen die den Weiterbetreib von AKWs negativ sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
-                         xytext=((bins[i] + bins[i + 1]) / 2 - 5, n.max() * 1.1),
-                         arrowprops=dict(facecolor='red', shrink=0.05))
+            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs negativ sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='red',
+                         arrowprops=dict(facecolor='red', shrink=0.05), size=15, zorder=5)
             break
 
-    # Achsenbeschriftung hinzufügen
-    plt.xlabel('Geschätze Prozentzahl [%]')
-    plt.ylabel('Anzahl der Schätzungen')
+    # Zeichnet orangen Strich durch die Mitte des Balkens mit dem Durschnitt der besorgten Teilnehmer
+    for i in range(len(bins) - 1):
+        if (durchschnitt_positive_teilnehmer >= bins[i]) and (durchschnitt_positive_teilnehmer < bins[i + 1]):
+            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2)
+            plt.annotate(text='Mittelwert der Teilnehmer*innen die\nden Weiterbetreib von AKWs positiv sehen', xy=((bins[i] + bins[i + 1]) / 2, n.max()),
+                         xytext=((bins[i] + bins[i + 1]) / 2 - 20, n.max() * 1.2), color='orange',
+                         arrowprops=dict(facecolor='orange', shrink=0.05), size=15, zorder=5)
+            break
+
     # nur ganzzahlige Zahlen für y-Achse anzeigen
     ax = plt.gca()
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
-    # Erzeugung der Achsenbeschriftungen für x als Intervalle
-    # Erzeugung der Achsenbeschriftungen für x als Intervalle
+    #Erzeugung der Achsenbeschriftungen für x als Intervalle
     plt.xticks(range(0, 101, 5), size=12)
     plt.yticks(size=12)
 
+    # Achsenbeschriftung hinzufügen
+    plt.xlabel('Geschätze Prozentzahl [%]', size=16)
+    plt.ylabel('Anzahl der Schätzungen', size=16)
+
     # Bild speichern
     plt.savefig('./_static/Bild_Ergebnisse2.pdf', format='pdf', bbox_inches='tight')
+    return schaetzfrage2_antworten, schaetzfrage2_antworten_negative_einstellung, schaetzfrage2_antworten_positive_einstellung
 
 
 class Player(BasePlayer):
