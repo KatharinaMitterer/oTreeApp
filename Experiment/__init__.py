@@ -16,7 +16,7 @@ class Group(BaseGroup):
     pass
 
 
-def anzahl_spieler(subsession):
+def anzahl_spieler():
     # Funktion um Anzahl der Spieler zu bestimmen, die bisher gespielt haben
 
     # Laden der Daten der Spieler die schon in der Vergangenheit gespielt haben und in txt Datei gespeichert wurden
@@ -28,7 +28,7 @@ def anzahl_spieler(subsession):
     return anzahl
 
 
-def plot_data_Ergebnisse1(subsession, player):
+def plot_data_Ergebnisse1(player):
     # Funktion um Ergebnisse zu plotten für Schätzfrage 1
 
     fig = plt.figure(figsize=(16, 8))
@@ -52,18 +52,18 @@ def plot_data_Ergebnisse1(subsession, player):
         for row_index in range(0, len(data)):
             schaetzfrage1_antworten.append(float(data.loc[row_index,'schaetzfrage1']))
             if float(data.loc[row_index, 'frage1']) == 1.0 or float(data.loc[row_index, 'frage1']) == 2.0:
-                schaetzfrage1_antworten_besorgter_teilnehmer.append(float(data.loc[row_index,'schaetzfrage1']))
-            if float(data.loc[row_index, 'frage1']) == 3.0 or float(data.loc[row_index, 'frage1']) == 4.0:
                 schaetzfrage1_antworten_unbesorgter_teilnehmer.append(float(data.loc[row_index,'schaetzfrage1']))
+            if float(data.loc[row_index, 'frage1']) == 3.0 or float(data.loc[row_index, 'frage1']) == 4.0:
+                schaetzfrage1_antworten_besorgter_teilnehmer.append(float(data.loc[row_index,'schaetzfrage1']))
 
     # Berechnung des Medians der gruppierten Daten
     median_besorgter_teilnehmer = np.median(schaetzfrage1_antworten_besorgter_teilnehmer)
     median_unbesorgter_teilnehmer = np.median(schaetzfrage1_antworten_unbesorgter_teilnehmer)
 
     # Erstellung des Histogramm mit entsprechenden Bins
-    bins = [5, 15.5, 25.5, 35.5, 45.5, 55.5, 65.5, 75.5, 85.5, 95.5, 105.5]
+    bins = [5, 15.5, 25.5, 35.5, 45.5, 55.5, 65.5, 75.5, 85.5, 95.5, 105.5, 115.5]
     bin_labels = ['0-10 %', '11-20 %', '21-30 %', '31-40 %', '41-50 %', '51-60 %', '61-70 %', '71-80 %', '81-90 %',
-                  '91-100 %', '>100 %']
+                  '91-100 %', '>100 %', '']
 
     n, bins, patches = plt.hist(schaetzfrage1_antworten, bins, color='lightblue', align='left', edgecolor='white', linewidth=6)
 
@@ -100,13 +100,14 @@ def plot_data_Ergebnisse1(subsession, player):
     plt.ylabel('Anzahl der Schätzungen', size=16)
     plt.yticks(size=12)
     plt.xticks(size=12)
+    plt.xlim(-1, 111)
 
     # Bild speichern
     plt.savefig('./_static/Bild_Ergebnisse1.pdf', format='pdf', bbox_inches='tight')
 
     return schaetzfrage1_antworten, schaetzfrage1_antworten_besorgter_teilnehmer, schaetzfrage1_antworten_unbesorgter_teilnehmer, player.frage1
 
-def plot_data_Ergebnisse2(subsession, player):
+def plot_data_Ergebnisse2(player):
     # Funktion um Ergebnisse zu plotten für Schätzfrage 2
 
     # Laden der Daten der Spieler die schon in der Vergangenheit gespielt haben
@@ -134,9 +135,9 @@ def plot_data_Ergebnisse2(subsession, player):
     median_positive_einstellung = np.median(schaetzfrage2_antworten_positive_einstellung)
 
     # Erstellung des Histogramm mit entsprechenden Bins
-    bins = [2.5, 8.0, 13.0, 18.0, 23.0, 28.0, 33.0, 38.0, 43.0, 48.0, 53.0]
+    bins = [2.5, 8.0, 13.0, 18.0, 23.0, 28.0, 33.0, 38.0, 43.0, 48.0, 53.0, 58.0]
     bin_labels = ['0-5 %', '6-10 %', '11-15 %', '16-20 %', '21-25 %', '26-30 %',
-                  '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %']
+                  '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %', '']
 
     n, bins, patches = plt.hist(schaetzfrage2_antworten, bins, color='lightblue', align='left', edgecolor='white', linewidth=6)
 
@@ -173,6 +174,7 @@ def plot_data_Ergebnisse2(subsession, player):
     plt.ylabel('Anzahl der Schätzungen', size=16)
     plt.yticks(size=12)
     plt.xticks(size=12)
+    plt.xlim(-1, 56)
 
     # Bild speichern
     plt.savefig('./_static/Bild_Ergebnisse2.pdf', format='pdf', bbox_inches='tight')
@@ -231,17 +233,17 @@ class Schaetzfrage2(Page):
 class Ergebnisse1(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        plot_data_Ergebnisse1(player.subsession, player)
+        plot_data_Ergebnisse1(player)
         return dict(
             schaetzfrage1_antwort=player.field_display('schaetzfrage1'),
-            anzahl_bisheriger_teilnehmer=anzahl_spieler(player.subsession),)
+            anzahl_bisheriger_teilnehmer=anzahl_spieler(),)
 
 class Ergebnisse2(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        plot_data_Ergebnisse2(player.subsession, player)
+        plot_data_Ergebnisse2(player)
         return dict(schaetzfrage2_antwort=player.field_display('schaetzfrage2'),
-                anzahl_bisheriger_teilnehmer=anzahl_spieler(player.subsession))
+                anzahl_bisheriger_teilnehmer=anzahl_spieler())
 
 class Ende(Page):
     pass
