@@ -1,11 +1,11 @@
-# Gruppe03
+# Gruppe 3
 
 
 ## Getting started
 
 Willkommen zur Abgabe für die Bonuspunkte von Gruppe3!
 
-## Gruppe3
+## Gruppe 3
 
 Gruppe3 besteht aus Daniel Hamm, Katharina Mitterer und Emil Stefko
 
