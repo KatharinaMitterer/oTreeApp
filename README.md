@@ -19,7 +19,7 @@ Wir haben eine Umfrage zum Thema "Confirmation Bias" erstellt. Viel Spaß!
 
 ## Erste Schritte
 
-In requiremnets.txt stehen alle benötigten Python-Bibliotheken. 
+In requirements.txt stehen alle benötigten Python-Bibliotheken. 
 Der devserver wird gestartet mit:
 
 ```
