@@ -3,7 +3,7 @@
 
     <p>
         Tatsächlich sind die CO2-Emissionen weltweit seit 1990 um <b>63 %</b> gestiegen. Die richtige
-        Antwort wäre also  <b>61-70 %</b> gewesen.
+        Antwort ist also  <b>61-70 %</b>.
     </p>
     <p>
        {% if player.schaetzfrage1 == 60.5 %}
@@ -15,7 +15,10 @@
             Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} </b> liegen Sie somit daneben.
 
         {% endif %}
+        <br>
+        <br>
      </p>
+
     <p>
         <div style="display: flex;">
             <img  src="{{ static 'Glühbirne.pdf'}}" width="200" height="150"/>
@@ -39,6 +42,9 @@
     </p>
 
     <img src="{{ static 'Bild_Ergebnisse1.pdf' }}"/>
+
+    <br>
+    <br>
 
     {{ next_button }}
 

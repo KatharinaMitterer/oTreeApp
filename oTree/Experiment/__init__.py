@@ -65,12 +65,10 @@ def plot_data_Ergebnisse1(subsession, player):
     # richtige Antwort als grüner Strich
     plt.axvline(65.5, color='green', linewidth=2, label='Richtige Antwort')
 
-    if median_besorgter_teilnehmer is not None:
-        plt.axvline(median_besorgter_teilnehmer, color='orange', linewidth=2,
+    plt.axvline(median_besorgter_teilnehmer, color='orange', linewidth=2,
                     label='Median der gruppierten Daten von Teilnehmer*innen\n die über Klimawandel besorgt sind')
 
-    if median_unbesorgter_teilnehmer is not None:
-        plt.axvline(median_unbesorgter_teilnehmer, color='red', linewidth=2,
+    plt.axvline(median_unbesorgter_teilnehmer, color='red', linewidth=2,
                     label='Median der gruppierten Daten von Teilnehmer*innen\ndie über Klimawandel nicht besorgt sind')
 
 
@@ -89,7 +87,7 @@ def plot_data_Ergebnisse1(subsession, player):
             break
     '''
     # Set the desired distance in inches
-    distance_in_inches = 55
+    distance_in_inches = 60
 
     # Convert the distance to figure coordinates
     distance_in_fig_coords = distance_in_inches / fig.dpi
@@ -101,12 +99,12 @@ def plot_data_Ergebnisse1(subsession, player):
     ax = plt.gca()
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
-    plt.yticks(size=12)
-
 
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätzte Prozentzahl [%]', size=16)
     plt.ylabel('Anzahl der Schätzungen', size=16)
+    plt.yticks(size=12)
+    plt.xticks(size=12)
 
     # Bild speichern
     plt.savefig('./_static/Bild_Ergebnisse1.pdf', format='pdf', bbox_inches='tight')
@@ -133,13 +131,13 @@ def plot_data_Ergebnisse2(subsession, player):
             if p.frage2 == '3' or p.frage2 == '4':
                 schaetzfrage2_antworten_positive_einstellung.append(float(p.schaetzfrage2))
 
-    durchschnitt_negative_teilnehmer = np.median(schaetzfrage2_antworten_negative_einstellung)
-    durchschnitt_positive_teilnehmer = np.median(schaetzfrage2_antworten_positive_einstellung)
+    median_negative_teilnehmer = np.median(schaetzfrage2_antworten_negative_einstellung)
+    median_positive_teilnehmer = np.median(schaetzfrage2_antworten_positive_einstellung)
 
     #Bins manuell erstellen
-    bins = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+    bins = [2.5, 8.0, 13.0, 18.0, 23.0, 28.0, 33.0, 38.0, 43.0, 48.0, 53.0]
     bin_labels = ['0-5 %', '6-10 %', '11-15 %', '16-20 %', '21-25 %', '26-30 %',
-                  '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %', '']
+                  '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %']
 
     n, bins, patches = plt.hist(schaetzfrage2_antworten, bins, color='blue', align='left')
 
@@ -150,24 +148,16 @@ def plot_data_Ergebnisse2(subsession, player):
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
-    plt.axvline(7, color='green', linewidth=2, label='Richtige Antwort')
+    plt.axvline(8, color='green', linewidth=2, label='Richtige Antwort')
 
-    #Zeichnet roten Strich durch die Mitte des Balkens mit dem Median der nicht besorgten Teilnehmer
-    for i in range(len(bins) - 1):
-        if (durchschnitt_negative_teilnehmer >= bins[i]) and (durchschnitt_negative_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2,
-                        label='Median der gruppierten Daten der Teilnehmer*innen\ndie den Weiterbetreib von AKWs negativ sehen')
-            break
+    plt.axvline(median_negative_teilnehmer, color='red', linewidth=2,
+                label='Median der gruppierten Daten der Teilnehmer*innen\ndie den Weiterbetreib von AKWs negativ sehen')
 
-    # Zeichnet orangen Strich durch die Mitte des Balkens mit dem median der besorgten Teilnehmer
-    for i in range(len(bins) - 1):
-        if (durchschnitt_positive_teilnehmer >= bins[i]) and (durchschnitt_positive_teilnehmer < bins[i + 1]):
-            plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2,
-                        label='Median der gruppierten Daten der Teilnehmer*innen\ndie den Weiterbetreib von AKWs positiv sehen')
-            break
+    plt.axvline(median_positive_teilnehmer, color='orange', linewidth=2,
+                label='Median der gruppierten Daten der Teilnehmer*innen\ndie den Weiterbetreib von AKWs positiv sehen')
 
     # Set the desired distance in inches
-    distance_in_inches = 55
+    distance_in_inches = 60
 
     # Convert the distance to figure coordinates
     distance_in_fig_coords = distance_in_inches / fig.dpi
@@ -186,6 +176,8 @@ def plot_data_Ergebnisse2(subsession, player):
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätzte Prozentzahl [%]', size=16)
     plt.ylabel('Anzahl der Schätzungen', size=16)
+    plt.yticks(size=12)
+    plt.xticks(size=12)
 
     # Bild speichern
     plt.savefig('./_static/Bild_Ergebnisse2.pdf', format='pdf', bbox_inches='tight')
