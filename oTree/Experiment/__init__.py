@@ -27,7 +27,7 @@ def anzahl_spieler(subsession):
 
 def plot_data_Ergebnisse1(subsession, player):
 
-    plt.figure(figsize=(16, 8))
+    fig = plt.figure(figsize=(16, 8))
 
     # Zähle die Anzahl der Antworten für jede Antwortmöglichkeit
     schaetzfrage1_antworten = []
@@ -88,8 +88,13 @@ def plot_data_Ergebnisse1(subsession, player):
                         label='Median der gruppierten Daten von Teilnehmer*innen\ndie über Klimawandel nicht besorgt sind')
             break
     '''
+    # Set the desired distance in inches
+    distance_in_inches = 55
 
-    plt.legend(bbox_to_anchor=(0.5, -0.25), ncol=3, loc='lower center', fontsize=15)
+    # Convert the distance to figure coordinates
+    distance_in_fig_coords = distance_in_inches / fig.dpi
+
+    plt.legend(bbox_to_anchor=(0.5, -distance_in_fig_coords), ncol=3, loc='lower center', fontsize=15)
 
 
     # nur ganzzahlige Zahlen für y-Achse anzeigen
@@ -109,7 +114,7 @@ def plot_data_Ergebnisse1(subsession, player):
 
 def plot_data_Ergebnisse2(subsession, player):
 
-    plt.figure(figsize=(16, 8))
+    fig=plt.figure(figsize=(16, 8))
 
     # Zähle die Anzahl der Antworten für jede Antwortmöglichkeit
     schaetzfrage2_antworten = []
@@ -134,14 +139,14 @@ def plot_data_Ergebnisse2(subsession, player):
     #Bins manuell erstellen
     bins = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
     bin_labels = ['0-5 %', '6-10 %', '11-15 %', '16-20 %', '21-25 %', '26-30 %',
-                  '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %']
+                  '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %', '']
 
     n, bins, patches = plt.hist(schaetzfrage2_antworten, bins, color='blue', align='left')
 
     plt.xticks(bins, bin_labels, rotation=45)
 
     #eigene Antwort des Spielers hellblau färben
-    value_bin = next(idx for idx, val in enumerate(bins) if val > player.schaetzfrage2)
+    value_bin = next(idx for idx, val in enumerate(bins) if val > float(player.schaetzfrage2))
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
@@ -161,7 +166,14 @@ def plot_data_Ergebnisse2(subsession, player):
                         label='Median der gruppierten Daten der Teilnehmer*innen\ndie den Weiterbetreib von AKWs positiv sehen')
             break
 
-    plt.legend(bbox_to_anchor=(0.5, -0.25), ncol=3, loc='lower center', fontsize=15)
+    # Set the desired distance in inches
+    distance_in_inches = 55
+
+    # Convert the distance to figure coordinates
+    distance_in_fig_coords = distance_in_inches / fig.dpi
+
+
+    plt.legend(bbox_to_anchor=(0.5, -distance_in_fig_coords), ncol=3, loc='lower center', fontsize=15)
 
     # nur ganzzahlige Zahlen für y-Achse anzeigen
     ax = plt.gca()
@@ -182,7 +194,7 @@ def plot_data_Ergebnisse2(subsession, player):
 
 class Player(BasePlayer):
 
-    frage1 = models.StringField(
+    frage1 = models.StringField(initial=0,
         label='''
         1.) Auf einer Skala von 1-4 wie besorgt sind Sie über die Auswirkungen der Klimawandels auf unsere Umwelt und
          Gesellschaft?<br><br>
@@ -190,7 +202,7 @@ class Player(BasePlayer):
         choices=[['1', '1 = Gar nicht besorgt'], ['2', '2 = Eher nicht besorgt'], ['3', '3 = Eher besorgt'], ['4', '4 = Sehr besorgt']],
         widget=widgets.RadioSelectHorizontal,
     )
-    frage2 = models.StringField(
+    frage2 = models.StringField(initial=0,
         label='''
         <br><br><br>
         2.) Auf einer Skala von 1-4, wie positiv stehen Sie einem Weiterbetrieb von Atomkraftwerken gegenüber?<br><br>''',
