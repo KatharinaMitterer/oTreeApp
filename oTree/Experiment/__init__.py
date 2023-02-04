@@ -35,9 +35,10 @@ def plot_data_Ergebnisse1(subsession, player):
     schaetzfrage1_antworten_unbesorgter_teilnehmer = []
 
     # Holt Antworten der Vorab-Frage 1 und Schaetzfrage1
+    #nur ein Spieler der Schätzfrage2 schon beantortet hat --> also IUnfrage vollständig ausgefüllt hat
 
     for p in subsession.get_players():
-        if p.schaetzfrage1 != 0:
+        if p.schaetzfrage2 != '':
             #Sammeln der Antworten aller Teilnehmer für Histogram:
             schaetzfrage1_antworten.append(float(p.schaetzfrage1))
             #Aufteilung Teilnehmer in besorgt und unbesorgt
@@ -50,9 +51,9 @@ def plot_data_Ergebnisse1(subsession, player):
     median_unbesorgter_teilnehmer = np.median(schaetzfrage1_antworten_unbesorgter_teilnehmer)
 
     # Histogramm erstellen
-    bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]
-    bin_labels = ['0', '0-10 %', '11-20 %', '21-30 %', '31-40 %', '41-50 %', '51-60 %', '61-70 %', '71-80 %', '81-90 %',
-                  '91-100 %', '>100 %']
+    bins = [5, 15.5, 25.5, 35.5, 45.5, 55.5, 65.5, 75.5, 85.5, 95.5, 105.5, 110.5]
+    bin_labels = ['0-10 %', '11-20 %', '21-30 %', '31-40 %', '41-50 %', '51-60 %', '61-70 %', '71-80 %', '81-90 %',
+                  '91-100 %', '>100 %', '']
 
     n, bins, patches = plt.hist(schaetzfrage1_antworten, bins=bins, color='blue', align='left')
 
@@ -63,7 +64,7 @@ def plot_data_Ergebnisse1(subsession, player):
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
-    plt.axvline(60, color='green', linewidth=2, label='Richtige Antwort')
+    plt.axvline(65.5, color='green', linewidth=2, label='Richtige Antwort')
     for i in range(len(bins) - 1):
         if (median_besorgter_teilnehmer >= bins[i]) and (median_besorgter_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2,
@@ -105,7 +106,7 @@ def plot_data_Ergebnisse2(subsession, player):
     # Holt Antworten der Vorab-Frage 2 und Schaetzfrage2
 
     for p in subsession.get_players():
-        if p.schaetzfrage2 != 0:
+        if p.schaetzfrage2 != '':
             # Sammeln der Antworten aller Teilnehmer für Histogram:
             schaetzfrage2_antworten.append(float(p.schaetzfrage2))
             # Aufteilung Teilnehmer in besorgt und unbesorgt
@@ -118,7 +119,7 @@ def plot_data_Ergebnisse2(subsession, player):
     durchschnitt_positive_teilnehmer = np.median(schaetzfrage2_antworten_positive_einstellung)
 
     #Bins manuell erstellen
-    bins=[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+    bins = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
     bin_labels = ['0-5 %', '6-10 %', '11-15 %', '16-20 %', '21-25 %', '26-30 %',
                   '31-35 %', '36-40 %', '41-45 %', '46-50 %', '>50 %']
 
@@ -168,7 +169,7 @@ def plot_data_Ergebnisse2(subsession, player):
 
 class Player(BasePlayer):
 
-    frage1 = models.StringField(initial=0,
+    frage1 = models.StringField(initial='',
         label='''
         1.) Auf einer Skala von 1-4 wie besorgt sind Sie über die Auswirkungen der Klimawandels auf unsere Umwelt und
          Gesellschaft?<br><br>
@@ -176,21 +177,21 @@ class Player(BasePlayer):
         choices=[['1', '1 = Gar nicht besorgt'], ['2', '2 = Eher nicht besorgt'], ['3', '3 = Eher besorgt'], ['4', '4 = Sehr besorgt']],
         widget=widgets.RadioSelectHorizontal,
     )
-    frage2 = models.StringField(initial=0,
+    frage2 = models.StringField(initial='',
         label='''
         <br><br><br>
         2.) Auf einer Skala von 1-4, wie positiv stehen Sie einem Weiterbetrieb von Atomkraftwerken gegenüber?<br><br>''',
         choices=[['1', '1 = Sehr negativ'], ['2', '2 = Eher negativ'], ['3', '3 = Eher positiv'], ['4', '4 = Sehr positiv']],
         widget=widgets.RadioSelectHorizontal,
     )
-    schaetzfrage1 = models.StringField(initial=0,
+    schaetzfrage1 = models.StringField(initial='',
             label="Um wie viel Prozent schätzen Sie, haben die CO2-Emissionen weltweit \
             seit 1990 zugenommen (Stand Ende 2021)?", choices=[['5','0-10 %'], ['15.5', '11-20 %'], ['25.5','21-30 %'],
                         ['35.5','31-40 %'], ['45.5','41-50 %'],['55.5','51-60 %'], ['65.5','61-70 %'], ['75.5','71-80 %'],
                         ['85.5','81-90 %'], ['95.5', '91-100 %'], ['105.5','>100 %']],
     )
 
-    schaetzfrage2 = models.StringField(initial=0,
+    schaetzfrage2 = models.StringField(initial='',
          label="Wie hoch schätzen die den Beitrag von Atomkraftwerken (AKWs)\
          zu unserem Strommix in Deutschland (in Prozent)?",
          choices=[['2.5', '0-5 %'], ['8.0', '6-10 %'], ['13.0', '11-15 %'], ['18.0', '16-20 %'], ['23.0', '21-25 %'],
@@ -221,7 +222,7 @@ class Ergebnisse1(Page):
     def vars_for_template(player: Player):
         plot_data_Ergebnisse1(player.subsession, player)
         return dict(
-            schaetzfrage1_antwort=player.schaetzfrage1,
+            schaetzfrage1_antwort=player.field_display('schaetzfrage1'),
             anzahl_bisheriger_teilnehmer=anzahl_spieler(player.subsession),)
 
 
@@ -229,7 +230,7 @@ class Ergebnisse2(Page):
     @staticmethod
     def vars_for_template(player: Player):
         plot_data_Ergebnisse2(player.subsession, player)
-        return dict(schaetzfrage2_antwort=player.schaetzfrage2,
+        return dict(schaetzfrage2_antwort=player.field_display('schaetzfrage2'),
                 anzahl_bisheriger_teilnehmer=anzahl_spieler(player.subsession))
 
 

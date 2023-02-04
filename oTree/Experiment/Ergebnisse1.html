@@ -2,16 +2,17 @@
 {{ block content }}
 
     <p>
-        Tatsächlich sind die CO2-Emissionen weltweit seit 1990 um <b>60 %</b> gestiegen.
+        Tatsächlich sind die CO2-Emissionen weltweit seit 1990 um <b>63 %</b> gestiegen. Die richtige
+        wäre alos  <b>61-70 %</b> gewesen.
     </p>
     <p>
        {% if player.schaetzfrage1 == 60.5 %}
 
-            Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} %</b> lagen Sie im richtigen Intervall.
+            Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} </b> liegen Sie somit richtig..
 
         {% else %}
 
-            Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} %</b> lagen Sie daneben.
+            Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} </b> liegen Sie somit daneben.
 
         {% endif %}
      </p>
