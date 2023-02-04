@@ -10,6 +10,7 @@ Willkommen zur Abgabe für die Bonuspunkte von Gruppe3!
 Gruppe3 besteht aus Daniel Hamm, Katharina Mitterer und Emil Stefko
 
 ##Git-Repository
+
 Unser Projekt ist in Gitlab unter https://git.scc.kit.edu/ws2022-ewf-bonus/gruppe03.git abgespeichert
 
 ##Thema
