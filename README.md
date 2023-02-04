@@ -7,7 +7,7 @@ Willkommen zur Abgabe für die Bonuspunkte von Gruppe3!
 
 ## Gruppe 3
 
-Gruppe3 besteht aus Daniel Hamm, Katharina Mitterer und Emil Stefko
+Gruppe 3 besteht aus Daniel Hamm, Katharina Mitterer und Emil Stefko
 
 ## Git-Repository
 
