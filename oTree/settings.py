@@ -11,7 +11,7 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='Umfrage', app_sequence=['umfrage_gruppe3'], num_demo_participants=4
+        name='Experiment', app_sequence=['Experiment'], num_demo_participants=4
     ),
     dict(name='common_value_action',
         display_name="common_value_action",
@@ -39,7 +39,7 @@ REAL_WORLD_CURRENCY_CODE = 'EUR'
 USE_POINTS = True
 
 ROOMS = [
-    dict(name='umfrage_gruppe3', display_name='Umfrage'),
+    dict(name='Experiment', display_name='Umfrage'),
 ]
 
 ADMIN_USERNAME = 'admin'

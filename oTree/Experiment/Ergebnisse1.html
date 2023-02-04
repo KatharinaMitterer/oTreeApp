@@ -3,10 +3,18 @@
 
     <p>
         Tatsächlich sind die CO2-Emissionen weltweit seit 1990 um <b>60 %</b> gestiegen.
-        Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} %</b> lagen Sie
-        um <b><span style="white-space: nowrap;">{{ differenz_prozentpunkte_schaetzfrage1 }} </span>Prozentpunkte </b> daneben.
     </p>
+    <p>
+       {% if player.schaetzfrage1 == 60.5 %}
 
+            Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} %</b> lagen Sie im richtigen Intervall.
+
+        {% else %}
+
+            Mit Ihrer Antwort von <b>{{ schaetzfrage1_antwort }} %</b> lagen Sie daneben.
+
+        {% endif %}
+     </p>
     <p>
         <div style="display: flex;">
             <img  src="{{ static 'Glühbirne.pdf'}}" width="200" height="150"/>
