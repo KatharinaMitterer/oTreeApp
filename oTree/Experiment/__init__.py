@@ -30,7 +30,7 @@ def plot_data_Ergebnisse1(subsession, player):
     plt.figure(figsize=(16, 8))
 
     # Zähle die Anzahl der Antworten für jede Antwortmöglichkeit
-    schaetzfrage1_antworten=[]
+    schaetzfrage1_antworten = []
     schaetzfrage1_antworten_besorgter_teilnehmer = []
     schaetzfrage1_antworten_unbesorgter_teilnehmer = []
 
@@ -38,7 +38,7 @@ def plot_data_Ergebnisse1(subsession, player):
     #nur ein Spieler der Schätzfrage2 schon beantortet hat --> also IUnfrage vollständig ausgefüllt hat
 
     for p in subsession.get_players():
-        if p.schaetzfrage2 != '':
+        if p.schaetzfrage2 != 0:
             #Sammeln der Antworten aller Teilnehmer für Histogram:
             schaetzfrage1_antworten.append(float(p.schaetzfrage1))
             #Aufteilung Teilnehmer in besorgt und unbesorgt
@@ -59,12 +59,24 @@ def plot_data_Ergebnisse1(subsession, player):
 
     plt.xticks(bins, bin_labels, rotation=45)
 
-
     value_bin = next(idx for idx, val in enumerate(bins) if val > float(player.schaetzfrage1))
     patches[value_bin - 1].set_fc('lightblue')
 
     # richtige Antwort als grüner Strich
     plt.axvline(65.5, color='green', linewidth=2, label='Richtige Antwort')
+
+    if median_besorgter_teilnehmer is not None:
+        plt.axvline(median_besorgter_teilnehmer, color='orange', linewidth=2,
+                    label='Median der gruppierten Daten von Teilnehmer*innen\n die über Klimawandel besorgt sind')
+
+    if median_unbesorgter_teilnehmer is not None:
+        plt.axvline(median_unbesorgter_teilnehmer, color='red', linewidth=2,
+                    label='Median der gruppierten Daten von Teilnehmer*innen\ndie über Klimawandel nicht besorgt sind')
+
+
+
+    '''
+    
     for i in range(len(bins) - 1):
         if (median_besorgter_teilnehmer >= bins[i]) and (median_besorgter_teilnehmer < bins[i + 1]):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='orange', linewidth=2,
@@ -75,6 +87,7 @@ def plot_data_Ergebnisse1(subsession, player):
             plt.axvline(x=(bins[i] + bins[i + 1]) / 2, color='red', linewidth=2,
                         label='Median der gruppierten Daten von Teilnehmer*innen\ndie über Klimawandel nicht besorgt sind')
             break
+    '''
 
     plt.legend(bbox_to_anchor=(0.5, -0.25), ncol=3, loc='lower center', fontsize=15)
 
@@ -106,7 +119,7 @@ def plot_data_Ergebnisse2(subsession, player):
     # Holt Antworten der Vorab-Frage 2 und Schaetzfrage2
 
     for p in subsession.get_players():
-        if p.schaetzfrage2 != '':
+        if p.schaetzfrage2 != 0:
             # Sammeln der Antworten aller Teilnehmer für Histogram:
             schaetzfrage2_antworten.append(float(p.schaetzfrage2))
             # Aufteilung Teilnehmer in besorgt und unbesorgt
@@ -169,7 +182,7 @@ def plot_data_Ergebnisse2(subsession, player):
 
 class Player(BasePlayer):
 
-    frage1 = models.StringField(initial='',
+    frage1 = models.StringField(
         label='''
         1.) Auf einer Skala von 1-4 wie besorgt sind Sie über die Auswirkungen der Klimawandels auf unsere Umwelt und
          Gesellschaft?<br><br>
@@ -177,21 +190,21 @@ class Player(BasePlayer):
         choices=[['1', '1 = Gar nicht besorgt'], ['2', '2 = Eher nicht besorgt'], ['3', '3 = Eher besorgt'], ['4', '4 = Sehr besorgt']],
         widget=widgets.RadioSelectHorizontal,
     )
-    frage2 = models.StringField(initial='',
+    frage2 = models.StringField(
         label='''
         <br><br><br>
         2.) Auf einer Skala von 1-4, wie positiv stehen Sie einem Weiterbetrieb von Atomkraftwerken gegenüber?<br><br>''',
         choices=[['1', '1 = Sehr negativ'], ['2', '2 = Eher negativ'], ['3', '3 = Eher positiv'], ['4', '4 = Sehr positiv']],
         widget=widgets.RadioSelectHorizontal,
     )
-    schaetzfrage1 = models.StringField(initial='',
+    schaetzfrage1 = models.StringField(initial=0,
             label="Um wie viel Prozent schätzen Sie, haben die CO2-Emissionen weltweit \
             seit 1990 zugenommen (Stand Ende 2021)?", choices=[['5','0-10 %'], ['15.5', '11-20 %'], ['25.5','21-30 %'],
                         ['35.5','31-40 %'], ['45.5','41-50 %'],['55.5','51-60 %'], ['65.5','61-70 %'], ['75.5','71-80 %'],
                         ['85.5','81-90 %'], ['95.5', '91-100 %'], ['105.5','>100 %']],
     )
 
-    schaetzfrage2 = models.StringField(initial='',
+    schaetzfrage2 = models.StringField(initial=0,
          label="Wie hoch schätzen die den Beitrag von Atomkraftwerken (AKWs)\
          zu unserem Strommix in Deutschland (in Prozent)?",
          choices=[['2.5', '0-5 %'], ['8.0', '6-10 %'], ['13.0', '11-15 %'], ['18.0', '16-20 %'], ['23.0', '21-25 %'],
