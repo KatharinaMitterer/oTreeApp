@@ -205,7 +205,7 @@ class Player(BasePlayer):
 
     schaetzfrage2 = models.StringField(initial=0,
          label="<b>Wie hoch schätzen Sie den Beitrag von Atomkraftwerken (AKWs)\
-         zu unserem aktuellen Strommix in Deutschland (Stand Ende 2022)?</b>",
+         zu unserem Strommix in Deutschland (Stand Ende 2022)?</b>",
          choices=[['2.5', '0-5 %'], ['8.0', '6-10 %'], ['13.0', '11-15 %'], ['18.0', '16-20 %'], ['23.0', '21-25 %'],
                   ['28.0', '26-30 %'], ['33.0', '31-35 %'], ['38.0', '36-40 %'], ['43.0', '41-45 %'], ['48.0', '46-50 %'],
                   ['53.0', '>50 %']],
