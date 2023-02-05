@@ -13,3 +13,4 @@ __pycache__/
 merge.ps1
 *.otreezip
 DS_Store
+.test
