@@ -97,7 +97,7 @@ def plot_data_Ergebnisse1(player):
 
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätzte Prozentzahl [%]', size=16)
-    plt.ylabel('Anzahl der Schätzungen', size=16)
+    plt.ylabel('Anzahl der Teilnehmer', size=16)
     plt.yticks(size=12)
     plt.xticks(size=12)
     plt.xlim(-1, 111)
@@ -171,7 +171,7 @@ def plot_data_Ergebnisse2(player):
 
     # Achsenbeschriftung hinzufügen
     plt.xlabel('Geschätzte Prozentzahl [%]', size=16)
-    plt.ylabel('Anzahl der Schätzungen', size=16)
+    plt.ylabel('Anzahl der Teilnehmer', size=16)
     plt.yticks(size=12)
     plt.xticks(size=12)
     plt.xlim(-1, 56)
