@@ -89,9 +89,7 @@ def plot_data_Ergebnisse1(player):
                     label='Median der Teilnehmer*innen\ndie über Klimawandel nicht besorgt sind', linestyle='--')
 
     # Erzeugung der Legende unterhalb des Plots, in dem der Abstand unabhängig von der Anzahl der bisherigen Spieler fix bleibt
-    distance_in_inches = 60
-    distance_in_fig_coords = distance_in_inches / fig.dpi
-    plt.legend(bbox_to_anchor=(0.5, -distance_in_fig_coords), ncol=3, loc='lower center', fontsize=15)
+    plt.legend(fontsize=15, ncol=3, loc='lower center',bbox_to_anchor=(0.5,0), borderaxespad=-9)
 
     # Nur ganzzahlige Zahlen für y-Achse anzeigen
     ax = plt.gca()
@@ -155,17 +153,15 @@ def plot_data_Ergebnisse2(player):
     # Erstellung einer roten Geraden, die dem Median der gruppierten Daten der Teilnehmer*innen
     # die den Weiterbetreib von AKWs negativ sehen
     plt.axvline(median_negative_einstellung, color='red', linewidth=2,
-                label='Median der Teilnehmer*innen\ndie den Weiterbetreib von AKWs negativ sehen',  linestyle='-')
+                label='Median der Teilnehmer*innen die den\nWeiterbetreib von AKWs negativ sehen',  linestyle='-')
 
     # Erstellung einer orangen Geraden, die dem Median der gruppierten Daten der Teilnehmer*innen
     # die den Weiterbetreib von AKWs positiv sehen
     plt.axvline(median_positive_einstellung, color='orange', linewidth=2,
-                label='Median der Teilnehmer*innen\ndie den Weiterbetreib von AKWs positiv sehen',  linestyle='--')
+                label='Median der Teilnehmer*innen die den\nWeiterbetreib von AKWs positiv sehen',  linestyle='--')
 
     # Erzeugung der Legende unterhalb des Plots, in dem der Abstand unabhängig von der Anzahl der bisherigen Spieler fix bleibt
-    distance_in_inches = 60
-    distance_in_fig_coords = distance_in_inches / fig.dpi
-    plt.legend(bbox_to_anchor=(0.5, -distance_in_fig_coords), ncol=3, loc='lower center', fontsize=15)
+    plt.legend(fontsize=15, ncol=3, loc='lower center',bbox_to_anchor=(0.5,0), borderaxespad=-9)
 
     # Nur ganzzahlige Zahlen für y-Achse anzeigen
     ax = plt.gca()
