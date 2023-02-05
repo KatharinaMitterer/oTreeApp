@@ -81,7 +81,7 @@ def plot_data_Ergebnisse1(player):
     # Erstellung einer orangen Geraden, die dem Median der gruppierten Daten der Teilnehmer*innen
     # die über Klimawandel besorgt sind, enstpricht
     plt.axvline(median_besorgter_teilnehmer, color='orange', linewidth=2,
-                    label='Median der Teilnehmer*innen\n die über Klimawandel besorgt sind', linestyle='-')
+                    label='Median der Teilnehmer*innen\ndie über Klimawandel besorgt sind', linestyle='-')
 
     # Erstellung einer orangen Geraden, die dem Median der gruppierten Daten der Teilnehmer*innen
     # die über Klimawandel nicht besorgt sind, enstpricht
