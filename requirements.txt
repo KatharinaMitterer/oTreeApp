@@ -1,9 +1,6 @@
-# oTree-may-overwrite-this-file
-# IF YOU MODIFY THIS FILE, remove these comments. 
-# otherwise, oTree will automatically overwrite it.
-otree>=5.4.0
+otree==5.10.2
 psycopg2>=2.8.4
 sentry-sdk==0.7.9
-matplotlib
-numpy
-pandas
+matplotlib==3.6.2
+numpy==1.23.5
+pandas==1.5.2
