@@ -13,7 +13,7 @@ Unser Projekt ist in Gitlab unter https://git.scc.kit.edu/ws2022-ewf-bonus/grupp
 ## Thema
 
 Wir haben eine Umfrage zum Thema "Confirmation Bias" erstellt. Unser Experiment befindet sich im Ordner 
-<i>Experiment</i>. In diesem Ordner wird auch noch einmal genau der Aufbau des Experiments erklärt. Viel Spaß!
+<i>Experiment</i>. Eine Beschreibung zu den Dateien dieses Ordners befindet sich unten. Viel Spaß!
 
 ## Erste Schritte
 
