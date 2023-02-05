@@ -198,14 +198,14 @@ class Player(BasePlayer):
     )
     schaetzfrage1 = models.StringField(initial=0,
             label="<b>Um wie viel Prozent schätzen Sie, haben die CO2-Emissionen weltweit \
-            seit 1990 zugenommen (Stand Ende 2022)?</b>", choices=[['5','0-10 %'], ['15.5', '11-20 %'], ['25.5','21-30 %'],
+            seit 1990 zugenommen (Stand Ende 2021)?</b>", choices=[['5','0-10 %'], ['15.5', '11-20 %'], ['25.5','21-30 %'],
                         ['35.5','31-40 %'], ['45.5','41-50 %'],['55.5','51-60 %'], ['65.5','61-70 %'], ['75.5','71-80 %'],
                         ['85.5','81-90 %'], ['95.5', '91-100 %'], ['105.5','>100 %']],
     )
 
     schaetzfrage2 = models.StringField(initial=0,
          label="<b>Wie hoch schätzen Sie den Beitrag von Atomkraftwerken (AKWs)\
-         zu unserem aktuellen Strommix in Deutschland (in Prozent)?</b>",
+         zu unserem aktuellen Strommix in Deutschland (Stand Ende 2022)?</b>",
          choices=[['2.5', '0-5 %'], ['8.0', '6-10 %'], ['13.0', '11-15 %'], ['18.0', '16-20 %'], ['23.0', '21-25 %'],
                   ['28.0', '26-30 %'], ['33.0', '31-35 %'], ['38.0', '36-40 %'], ['43.0', '41-45 %'], ['48.0', '46-50 %'],
                   ['53.0', '>50 %']],
