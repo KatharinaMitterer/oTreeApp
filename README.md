@@ -43,5 +43,10 @@ nach ihrer Positionierung dargestellt.
 Das Ziel ist es, den Einfluss der eigenen Einstellung auf die Schätzungen zu veranschaulichen, 
 was ein Beispiel für den Confirmation Bias ist. <br>
 Am Ende (<i>Ende.html</i>) wird den Teilnehmern für die Teilnahme am Experiment gedankt und ein Link zur Registrierung 
-fürs KD^2lab bereitgestellt.
+fürs KD<sup>2</sup>lab bereitgestellt. <br>
+<br>
+Bilder von den Histogrammen (mit Matplotlib geplottet) für die Ergebnisse aller bisherigen Spieler befinden sich im 
+Ordner <i>_static</i>. <br>
+Daten aller bisherigen Spieler befinden sich im Ordner <i>_rooms</i> in der Datei: <i>gruppe3_room.txt</i> 
+
 

@@ -1,4 +1,6 @@
 from otree.api import *
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import numpy as np
@@ -27,8 +29,13 @@ def anzahl_spieler():
 
     return anzahl
 
-
 def plot_data_Ergebnisse1(player):
+
+    # Speichern der Daten des aktuellen Spielers in txt Datei:
+    with open("./_rooms/gruppe3_room.txt", "a") as file:
+        file.write(f"\n{player.id}, {float(player.frage1)}, {float(player.frage2)}, "
+                   f"{float(player.schaetzfrage1)}, {float(player.schaetzfrage2)}")
+
     # Funktion um Ergebnisse zu plotten für Schätzfrage 1
 
     fig = plt.figure(figsize=(16, 8))
@@ -37,11 +44,6 @@ def plot_data_Ergebnisse1(player):
     schaetzfrage1_antworten = []
     schaetzfrage1_antworten_besorgter_teilnehmer = []
     schaetzfrage1_antworten_unbesorgter_teilnehmer = []
-
-    # Speichern der Daten des aktuellen Spielers in txt Datei:
-    with open("./_rooms/gruppe3_room.txt", "a") as file:
-        file.write(f"\n{player.id}, {float(player.frage1)}, {float(player.frage2)}, "
-                   f"{float(player.schaetzfrage1)}, {float(player.schaetzfrage2)}")
 
     # Laden der Daten der Spieler die schon in der Vergangenheit gespielt haben
     data = pd.read_csv('./_rooms/gruppe3_room.txt', delimiter=',', header=0,
@@ -231,6 +233,7 @@ class Schaetzfrage2(Page):
     form_fields = ['schaetzfrage2']
 
 class Ergebnisse1(Page):
+
     @staticmethod
     def vars_for_template(player: Player):
         plot_data_Ergebnisse1(player)
@@ -239,6 +242,7 @@ class Ergebnisse1(Page):
             anzahl_bisheriger_teilnehmer=anzahl_spieler(),)
 
 class Ergebnisse2(Page):
+
     @staticmethod
     def vars_for_template(player: Player):
         plot_data_Ergebnisse2(player)
